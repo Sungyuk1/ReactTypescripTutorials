@@ -1,0 +1,1 @@
+1) For Larger projects having all your exports be named might make it easier to keep track of everything. This means using export instead of default export
