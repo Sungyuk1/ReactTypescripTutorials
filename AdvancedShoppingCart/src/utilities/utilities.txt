@@ -1,0 +1,2 @@
+Folder for code regarding small utilities that we do 
+EX) Formatting our code in certain places
