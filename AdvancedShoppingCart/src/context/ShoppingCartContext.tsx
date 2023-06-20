@@ -7,10 +7,14 @@ type ShoppingCartProviderProps = {
 
 //No add to cart since adding to cart is the same as increasing our quantity from 0 to 1
 type ShoppingCartContext = {
+    openCart: () => void,
+    closeCart: () => void,
     getItemQuantity: (id: number) => number,
     increaseCartQuantity: (id: number) => void,
     decreaseCartQuantity: (id: number) => void,
-    removeFromCart: (id: number) => void
+    removeFromCart: (id: number) => void,
+    cartQuantity: number,
+    cartItems: CartItem[]
 }
 
 type CartItem = {
@@ -28,6 +32,14 @@ export function ShoppingCartProvider({children}:ShoppingCartProviderProps){
 
     //The format below is giving the cartItems state the type of CartItem []
     const [cartItems, setCartItems] = useState<CartItem[]>([])
+
+    const [isOpen, setIsOpen] = useState(false)
+
+    const openCart = () => setIsOpen(true)
+    const closeCart = () => setIsOpen(false)
+
+    //All this is doing is counting up all the different quantities of the different items 
+    const cartQuantity = cartItems.reduce((quantity, item)=> item.quantity + quantity, 0)
 
     function getItemQuantity(id: number){
         //return quantity if we have that item, else return 0
@@ -83,7 +95,7 @@ export function ShoppingCartProvider({children}:ShoppingCartProviderProps){
         })
     }
 
-    return <ShoppingCartContext.Provider value={{getItemQuantity, increaseCartQuantity, decreaseCartQuantity, removeFromCart}}>
+    return <ShoppingCartContext.Provider value={{getItemQuantity, increaseCartQuantity, decreaseCartQuantity, removeFromCart, openCart, closeCart, cartItems, cartQuantity}}>
         {children}
     </ShoppingCartContext.Provider>
 }

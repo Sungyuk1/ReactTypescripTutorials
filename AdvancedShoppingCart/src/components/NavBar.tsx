@@ -1,5 +1,6 @@
 import {Container, Navbar as NavBarBS, Nav, Button} from  "react-bootstrap" //Importing Bootstrap's NavBar
 import {NavLink} from "react-router-dom"
+import { useShoppingCart } from "../context/ShoppingCartContext"
 
 //Put everything in a container so that we have the same sizing information as the rest of our application
 //me-auto : makes sure that whatever we have to the right side is pushed all the way to the right side
@@ -7,6 +8,9 @@ import {NavLink} from "react-router-dom"
 //Need to make the position to be relative in the button to use absolute styling for the small item container. 
 //sticky=top makes the navBar always stick to the top of the page. So it will be visible even if you scroll
 export function NavBar(){
+    //get values from context
+    const {openCart, cartQuantity} = useShoppingCart()
+
     return(<NavBarBS sticky="top" className="bg-white shadow-sm mb-3">
         <Container>
             <Nav className="me-auto">
@@ -14,9 +18,13 @@ export function NavBar(){
                 <Nav.Link as={NavLink} to={"/Store"}>Store</Nav.Link>
                 <Nav.Link as={NavLink} to={"/About"}>About</Nav.Link>
             </Nav>
+            {/* Cart only shows if our quantity is greater than 0*/}
+            {cartQuantity > 0 && (
             <Button style={({width: "3rem", height: "3rem", position:"relative"})} 
                     variant="outline-primary"
-                    className="rounded-circle">
+                    className="rounded-circle"
+                    onClick={openCart}>
+
                 <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 576 512"
@@ -28,9 +36,10 @@ export function NavBar(){
                                 align-items-center" style={{color: "white", width:"1.5rem",
                                                             height:"1.5rem", position: "absolute",
                                                             bottom:0, right:0, transform:"translate(25%, 25%)"}}>
-                    3
+                    {cartQuantity}
                 </div>
             </Button>
+            )}
         </Container>
     </NavBarBS>)
 }
