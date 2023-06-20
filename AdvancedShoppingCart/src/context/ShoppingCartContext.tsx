@@ -1,5 +1,6 @@
 import { ReactNode, createContext, useContext, useState} from "react";
 import { ShoppingCart } from "../components/ShoppingCart";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 //ReactNode is just what you give the children property in react
 type ShoppingCartProviderProps = {
@@ -32,7 +33,7 @@ export function useShoppingCart(){
 export function ShoppingCartProvider({children}:ShoppingCartProviderProps){
 
     //The format below is giving the cartItems state the type of CartItem []
-    const [cartItems, setCartItems] = useState<CartItem[]>([])
+    const [cartItems, setCartItems] = useLocalStorage<CartItem[]>("Shopping-cart", [])
 
     const [isOpen, setIsOpen] = useState(false)
 
